@@ -1,0 +1,14 @@
+aws-cdk.core==1.64.1
+aws-cdk.aws-cognito==1.64.1
+aws-cdk.aws-apigateway==1.64.1
+aws-cdk.aws-lambda==1.64.1
+aws-cdk.aws-iam==1.64.1
+aws-cdk.aws-secretsmanager==1.64.1
+aws-cdk.aws-codebuild==1.64.1
+aws-cdk.aws-codedeploy==1.64.1
+aws-cdk.aws-codecommit==1.64.1
+aws-cdk.aws-codepipeline==1.64.1
+aws-cdk.aws-codepipeline_actions==1.64.1
+aws-cdk.aws-s3==1.64.1
+aws-cdk.custom-resources==1.64.1
+aws-cdk.aws-s3-notifications==1.64.1
