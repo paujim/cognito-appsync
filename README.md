@@ -1,5 +1,5 @@
 
-# Apigateway with AppSync
+# AppSync with Apigateway as a proxy
 
 To manually create a virtualenv on MacOS and Linux:
 
