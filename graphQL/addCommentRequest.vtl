@@ -1,0 +1,9 @@
+{
+    "version": "2017-02-28",
+    "operation": "PutItem",
+    "key": {
+        "todoid": { "S": $util.toJson($context.arguments.todoid) },
+        "commentid": { "S": "$util.autoId()" }
+    },
+    "attributeValues" : $util.dynamodb.toMapValuesJson($ctx.args)
+}

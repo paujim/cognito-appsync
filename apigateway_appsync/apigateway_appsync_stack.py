@@ -60,7 +60,28 @@ class ApigatewayAppsyncStack(core.Stack):
             partition_key=dynamodb.Attribute(
                 name="id",
                 type=dynamodb.AttributeType.STRING
-            )
+            ),
+        )
+        commnet_table = dynamodb.Table(
+            scope=self,
+            id="comment-table",
+            removal_policy=core.RemovalPolicy.DESTROY,
+            partition_key=dynamodb.Attribute(
+                name="commentid",
+                type=dynamodb.AttributeType.STRING
+            ),
+            sort_key=dynamodb.Attribute(
+                name="todoid",
+                type=dynamodb.AttributeType.STRING
+            ),
+        )
+
+        commnet_table.add_global_secondary_index(
+            partition_key=dynamodb.Attribute(
+                name="todoid",
+                type=dynamodb.AttributeType.STRING
+            ),
+            index_name="todoid-index"
         )
 
         todo_dS = api.add_dynamo_db_data_source(
@@ -84,4 +105,27 @@ class ApigatewayAppsyncStack(core.Stack):
                 os.path.join("graphQL", "addTodoRequest.vtl")),
             response_mapping_template=appsync.MappingTemplate.from_file(
                 os.path.join("graphQL", "addTodoResponse.vtl")),
+        )
+
+        comment_dS = api.add_dynamo_db_data_source(
+            id="commentDS",
+            table=commnet_table,
+        )
+
+        comment_dS.create_resolver(
+            type_name="Todo",
+            field_name="contents",
+            request_mapping_template=appsync.MappingTemplate.from_file(
+                os.path.join("graphQL", "getCommentsRequest.vtl")),
+            response_mapping_template=appsync.MappingTemplate.from_file(
+                os.path.join("graphQL", "getCommentsResponse.vtl")),
+        )
+
+        comment_dS.create_resolver(
+            type_name="Mutation",
+            field_name="addComment",
+            request_mapping_template=appsync.MappingTemplate.from_file(
+                os.path.join("graphQL", "addCommentRequest.vtl")),
+            response_mapping_template=appsync.MappingTemplate.from_file(
+                os.path.join("graphQL", "addCommentResponse.vtl")),
         )

@@ -8,7 +8,14 @@ schema {
  }
 
  type Mutation {
-     addTodo(id: ID!, name: String, description: String, priority: Int, status: TodoStatus): Todo
+     addTodo(name: String, description: String, priority: Int, status: TodoStatus): Todo
+     addComment(todoid: ID!, content: String): Comment
+ }
+
+type Comment {
+     todoid: ID!
+     commentid: String!
+     content: String
  }
 
  type Todo {
@@ -17,6 +24,7 @@ schema {
      description: String
      priority: Int
      status: TodoStatus
+     contents: [Comment]
  }
 
  type TodoConnection {

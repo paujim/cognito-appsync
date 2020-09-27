@@ -1,0 +1,13 @@
+{
+    "version": "2017-02-28",
+    "operation": "Query",
+    "index": "todoid-index",
+    "query": {
+        "expression": "todoid = :todoid",
+        "expressionValues": {
+            ":todoid": {
+                "S": $util.toJson($context.source.id)
+            }
+        }
+    }
+}
