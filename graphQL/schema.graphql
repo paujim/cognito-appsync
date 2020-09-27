@@ -1,13 +1,30 @@
-type demo {
-  id: String!
-  version: String!
+schema {
+  query: Query
+  mutation: Mutation
 }
-type Query {
-  getDemos: [ demo! ]
-}
-input DemoInput {
-  version: String!
-}
-type Mutation {
-  addDemo(input: DemoInput!): demo
-}
+
+ type Query {
+     getTodos(limit: Int, nextToken: String): TodoConnection
+ }
+
+ type Mutation {
+     addTodo(id: ID!, name: String, description: String, priority: Int, status: TodoStatus): Todo
+ }
+
+ type Todo {
+     id: ID!
+     name: String
+     description: String
+     priority: Int
+     status: TodoStatus
+ }
+
+ type TodoConnection {
+     todos: [Todo]
+     nextToken: String
+ }
+
+ enum TodoStatus {
+     done
+     pending
+ }

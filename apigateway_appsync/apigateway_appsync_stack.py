@@ -13,8 +13,8 @@ class ApigatewayAppsyncStack(core.Stack):
 
         api = appsync.GraphqlApi(
             scope=self,
-            id="Api",
-            name="demo",
+            id="graphql-api",
+            name="todo-api",
             schema=appsync.Schema.from_asset(
                 file_path=os.path.join("graphQL", "schema.graphql")),
             authorization_config=appsync.AuthorizationConfig(
@@ -25,35 +25,34 @@ class ApigatewayAppsyncStack(core.Stack):
             xray_enabled=True
         )
 
-        demo_table = dynamodb.Table(
+        todo_table = dynamodb.Table(
             scope=self,
-            id="DemoTable",
+            id="todo-table",
             partition_key=dynamodb.Attribute(
                 name="id",
                 type=dynamodb.AttributeType.STRING
             )
         )
 
-        demo_dS = api.add_dynamo_db_data_source(
-            id="demoDataSource",
-            table=demo_table,
+        todo_dS = api.add_dynamo_db_data_source(
+            id="todoDS",
+            table=todo_table,
         )
 
-        # Resolver for the Query "getDemos" that scans the DyanmoDb table and returns the entire list.
-        demo_dS.create_resolver(
+        todo_dS.create_resolver(
             type_name="Query",
-            field_name="getDemos",
-            request_mapping_template=appsync.MappingTemplate.dynamo_db_scan_table(),
-            response_mapping_template=appsync.MappingTemplate.dynamo_db_result_list()
+            field_name="getTodos",
+            request_mapping_template=appsync.MappingTemplate.from_file(
+                os.path.join("graphQL", "getItemsRequest.vtl")),
+            response_mapping_template=appsync.MappingTemplate.from_file(
+                os.path.join("graphQL", "getItemsResponse.vtl")),
         )
 
-        # Resolver for the Mutation "addDemo" that puts the item into the DynamoDb table.
-        demo_dS.create_resolver(
+        todo_dS.create_resolver(
             type_name="Mutation",
-            field_name="addDemo",
-            request_mapping_template=appsync.MappingTemplate.dynamo_db_put_item(
-                key=appsync.PrimaryKey.partition("id").auto(),
-                values=appsync.Values.projecting("demo"),
-            ),
-            response_mapping_template=appsync.MappingTemplate.dynamo_db_result_item()
+            field_name="addTodo",
+            request_mapping_template=appsync.MappingTemplate.from_file(
+                os.path.join("graphQL", "addTodoRequest.vtl")),
+            response_mapping_template=appsync.MappingTemplate.from_file(
+                os.path.join("graphQL", "addTodoResponse.vtl")),
         )
