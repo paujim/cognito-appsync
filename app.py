@@ -2,10 +2,10 @@
 
 from aws_cdk import core
 
-from apigateway_appsync.apigateway_appsync_stack import ApigatewayAppsyncStack
+from cognito_appsync.cognito_appsync_stack import CognitoAppsyncStack
 
 
 app = core.App()
-ApigatewayAppsyncStack(app, "apigateway-appsync")
+CognitoAppsyncStack(app, "cognito-appsync")
 
 app.synth()

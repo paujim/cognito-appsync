@@ -8,7 +8,7 @@ from aws_cdk import (
 )
 
 
-class ApigatewayAppsyncStack(core.Stack):
+class CognitoAppsyncStack(core.Stack):
 
     def __init__(self, scope: core.Construct, id: str, **kwargs) -> None:
         super().__init__(scope, id, **kwargs)
@@ -36,7 +36,7 @@ class ApigatewayAppsyncStack(core.Stack):
             ),
         )
 
-        api = appsync.GraphqlApi(
+        graphql_api = appsync.GraphqlApi(
             scope=self,
             id="graphql-api",
             name="todo-api",
@@ -75,7 +75,6 @@ class ApigatewayAppsyncStack(core.Stack):
                 type=dynamodb.AttributeType.STRING
             ),
         )
-
         commnet_table.add_global_secondary_index(
             partition_key=dynamodb.Attribute(
                 name="todoid",
@@ -84,7 +83,7 @@ class ApigatewayAppsyncStack(core.Stack):
             index_name="todoid-index"
         )
 
-        todo_dS = api.add_dynamo_db_data_source(
+        todo_dS = graphql_api.add_dynamo_db_data_source(
             id="todoDS",
             table=todo_table,
         )
@@ -107,7 +106,7 @@ class ApigatewayAppsyncStack(core.Stack):
                 os.path.join("graphQL", "addTodoResponse.vtl")),
         )
 
-        comment_dS = api.add_dynamo_db_data_source(
+        comment_dS = graphql_api.add_dynamo_db_data_source(
             id="commentDS",
             table=commnet_table,
         )
