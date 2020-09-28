@@ -15,8 +15,8 @@ setuptools.setup(
 
     author="author",
 
-    package_dir={"": "apigateway_appsync"},
-    packages=setuptools.find_packages(where="apigateway_appsync"),
+    package_dir={"": "cognito_appsync"},
+    packages=setuptools.find_packages(where="cognito_appsync"),
 
     install_requires=[
         "aws-cdk.core==1.64.1",
