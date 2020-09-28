@@ -1,5 +1,5 @@
 
-# AppSync with Apigateway as a proxy
+# AppSync with Cognito
 
 To manually create a virtualenv on MacOS and Linux:
 
